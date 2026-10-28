@@ -1,0 +1,12 @@
+fastapi>=0.110
+uvicorn>=0.29
+pydantic>=2.6
+pyyaml
+requests
+numpy
+playwright
+kokoro-onnx>=0.6.1
+# Heavy local models (install what you plan to use, see README):
+#   pip install torch transformers sentencepiece
+#   pip install git+https://github.com/huggingface/parler-tts.git
+#   pip install IndicTransToolkit   (see github.com/AI4Bharat/IndicTrans2)

@@ -1,0 +1,18 @@
+# Python
+.venv/
+.venv-*/
+__pycache__/
+*.pyc
+
+# Frontend
+node_modules/
+frontend/dist/
+
+# Large local models (download them, see README)
+models/*
+!models/.gitkeep
+
+# Generated lessons, study packs, voice cache and server logs
+data/*
+!data/.gitkeep
+*.tmp

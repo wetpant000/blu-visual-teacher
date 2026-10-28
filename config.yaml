@@ -1,0 +1,74 @@
+# ===== Blu Visual Teacher configuration =====
+# Everything marked  # CONFIGURE  is something you may need to change on your machine.
+
+languages:            # code: native name (shown in the UI)
+  en: English
+  hi: हिन्दी
+  kn: ಕನ್ನಡ
+  ta: தமிழ்
+  te: తెలుగు
+  bn: বাংলা
+  mr: मराठी
+
+ollama:
+  url: http://localhost:11434
+  model: qwen2.5:3b         # CONFIGURE: any ~3B instruct model you pulled with `ollama pull`
+  timeout: 240
+  planning_timeout: 60      # Fail over to the built-in lesson instead of waiting several minutes.
+
+translation:
+  model: ai4bharat/indictrans2-en-indic-dist-200M   # CONFIGURE: local path or HF id (download before the event)
+  device: cpu
+  ollama_model: llama3.2:3b  # Local translation fallback; the lesson planner remains on ollama.model.
+
+tts:
+  pause_seconds: 0.6        # silence added after each scene's audio
+  parallel: 2               # Kokoro / eSpeak sentences synthesized at the same time
+  kokoro:
+    model_path: models/kokoro/kokoro-v1.0.int8.onnx # CONFIGURE: download, see README
+    voices_path: models/kokoro/voices-v1.0.bin
+  parler:
+    model: models/indic-parler-tts                  # Local AI4Bharat model directory
+    style: "very clear audio, moderate speed, close recording, no background noise."
+    batch_size: 4             # sentences generated together; larger uses more RAM, fewer passes
+    preload: true             # load the model when the server starts so the first lesson does not wait
+  voices:
+    en:
+      - {id: kokoro-af-heart, name: "English (US, female) · Kokoro", engine: kokoro, voice: af_heart, lang: en-us}
+      - {id: kokoro-am-adam, name: "English (US, male) · Kokoro", engine: kokoro, voice: am_adam, lang: en-us}
+      - {id: kokoro-bf-emma, name: "English (UK, female) · Kokoro", engine: kokoro, voice: bf_emma, lang: en-gb}
+    hi:
+      - {id: kokoro-hf-alpha, name: "Hindi (female) · Kokoro", engine: kokoro, voice: hf_alpha, lang: hi}
+      - {id: kokoro-hf-beta, name: "Hindi (female) · Kokoro", engine: kokoro, voice: hf_beta, lang: hi}
+      - {id: kokoro-hm-omega, name: "Hindi (male) · Kokoro", engine: kokoro, voice: hm_omega, lang: hi}
+      - {id: kokoro-hm-psi, name: "Hindi (male) · Kokoro", engine: kokoro, voice: hm_psi, lang: hi}
+    kn:
+      - {id: parler-kn-f, name: "Kannada · Anu · AI4Bharat Parler", engine: parler, language: Kannada, speaker: Anu}
+      - {id: parler-kn-m, name: "Kannada · Suresh · AI4Bharat Parler", engine: parler, language: Kannada, speaker: Suresh}
+      - {id: kn, name: "Kannada · eSpeak NG", engine: espeak, voice: kn}
+      - {id: kn+f2, name: "Kannada (female) · eSpeak NG", engine: espeak, voice: kn+f2}
+    ta:
+      - {id: parler-ta-f, name: "Tamil · Jaya · AI4Bharat Parler", engine: parler, language: Tamil, speaker: Jaya}
+      - {id: parler-ta-m, name: "Tamil · Kavitha · AI4Bharat Parler", engine: parler, language: Tamil, speaker: Kavitha}
+      - {id: ta, name: "Tamil · eSpeak NG", engine: espeak, voice: ta}
+      - {id: ta+f2, name: "Tamil (female) · eSpeak NG", engine: espeak, voice: ta+f2}
+    te:
+      - {id: parler-te-f, name: "Telugu · Lalitha · AI4Bharat Parler", engine: parler, language: Telugu, speaker: Lalitha}
+      - {id: parler-te-m, name: "Telugu · Prakash · AI4Bharat Parler", engine: parler, language: Telugu, speaker: Prakash}
+      - {id: te, name: "Telugu · eSpeak NG", engine: espeak, voice: te}
+      - {id: te+f2, name: "Telugu (female) · eSpeak NG", engine: espeak, voice: te+f2}
+    bn:
+      - {id: parler-bn-f, name: "Bengali · Aditi · AI4Bharat Parler", engine: parler, language: Bengali, speaker: Aditi}
+      - {id: parler-bn-m, name: "Bengali · Arjun · AI4Bharat Parler", engine: parler, language: Bengali, speaker: Arjun}
+      - {id: bn, name: "Bengali · eSpeak NG", engine: espeak, voice: bn}
+      - {id: bn+f2, name: "Bengali (female) · eSpeak NG", engine: espeak, voice: bn+f2}
+    mr:
+      - {id: parler-mr-f, name: "Marathi · Sunita · AI4Bharat Parler", engine: parler, language: Marathi, speaker: Sunita}
+      - {id: parler-mr-m, name: "Marathi · Sanjay · AI4Bharat Parler", engine: parler, language: Marathi, speaker: Sanjay}
+      - {id: mr, name: "Marathi · eSpeak NG", engine: espeak, voice: mr}
+      - {id: mr+f2, name: "Marathi (female) · eSpeak NG", engine: espeak, voice: mr+f2}
+
+export:
+  fps: 12
+  workers: 4                # parallel browser pages rendering frames (0 = one per three CPU cores)
+  frontend_url: http://localhost:8000   # page Playwright renders (the built frontend served by the backend)
